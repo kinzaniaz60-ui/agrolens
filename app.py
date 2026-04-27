@@ -11,7 +11,7 @@ print("1. Checking for model...")
 MODEL_PATH = 'pepper_disease_model.h5'
 if not os.path.exists(MODEL_PATH):
     print("Downloading model from Google Drive...")
-    url = 'https://drive.google.com/uc?id=1tCog2DDn3TJpcDzXiaDo8yvlD4O75xnp'
+    url = 'https://drive.google.com/uc?id=1juWQmz7ln3kSPH5bJfxyk2fR1ukEtCxk'
     gdown.download(url, MODEL_PATH, quiet=False)
     print("Model downloaded successfully!")
 else:
