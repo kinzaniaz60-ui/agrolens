@@ -1,0 +1,6 @@
+keras==3.14.0
+flask
+pillow
+numpy
+opencv-python-headless==4.8.1.78
+gunicorn

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroLens | Spot the disease. Save the crop.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2C16 2 8 6 8 14C8 20 12 26 16 30C20 26 24 20 24 14C24 6 16 2 16 2Z" fill="#1B5E20"/>
+                    <circle cx="16" cy="14" r="5" fill="white"/>
+                    <path d="M13 14L15 16L19 12" stroke="#1B5E20" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M16 9V11M21 14H19M16 19V17M11 14H13" stroke="#1B5E20" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span>AgroLens</span>
+            </div>
+            <nav>
+                <a href="#home" class="active">Home</a>
+                <a href="#detect">Detect Now</a>
+            </nav>
+            <button class="cta-nav" onclick="scrollToSection('detect')">Check My Plant</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Spot the disease.<br><span>Save the crop.</span></h1>
+                <p>Upload a leaf photo and get instant disease name, cause, organic + chemical cure, and prevention tips in 3 seconds.</p>
+                <div class="hero-stats">
+                    <div><strong>98%</strong> Accuracy</div>
+                    <div><strong>2</strong> Classes</div>
+                    <div><strong>Grad-CAM</strong> Explainable</div>
+                </div>
+                <button class="cta-primary" onclick="scrollToSection('detect')">Check My Plant</button>
+            </div>
+            <div class="hero-image">
+                <div class="leaf-scan-animation">
+                    <div class="leaf"></div>
+                    <div class="scan-pulse"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <h2>3-Step Detection</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Upload Leaf Photo</h3>
+                    <p>Drag-drop or click to browse</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>AI Scan</h3>
+                    <p>Our CNN detects Bacterial Spot in 3 seconds</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Get Action Plan</h3>
+                    <p>Organic + chemical cures + Grad-CAM heatmap</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="detect" class="detect-section">
+            <h2>Detect Now</h2>
+            <div class="upload-card">
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="image-input" accept="image/*" hidden>
+                    <img id="preview-img" src="" alt="">
+                    <div class="upload-placeholder" id="upload-placeholder">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8BC34A" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17,8 12,3 7,8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <p><strong>Drag & drop leaf photo</strong></p>
+                        <p>or click to browse</p>
+                        <button class="cta-secondary" onclick="document.getElementById('image-input').click()">Upload Leaf Photo</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loading-state" id="loading-state">
+                <div class="leaf-growing">
+                    <div class="stem"></div>
+                    <div class="leaf-sprout"></div>
+                </div>
+                <p>Scanning leaf...</p>
+            </div>
+
+            <div class="results-card" id="results-card">
+                <div class="results-header">
+                    <h3 id="disease-title">Bacterial Spot</h3>
+                    <div class="severity-meter">
+                        <span>Severity</span>
+                        <div class="meter">
+                            <div class="meter-fill" id="meter-fill"></div>
+                        </div>
+                        <span id="severity-text">Medium</span>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-box">
+                        <h4>Cause</h4>
+                        <p id="disease-cause"></p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Organic Cure</h4>
+                        <p id="organic-cure"></p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Chemical Cure</h4>
+                        <p id="chemical-cure"></p>
+                    </div>
+                    <div class="result-box">
+                        <h4>Prevention</h4>
+                        <p id="prevention"></p>
+                    </div>
+                </div>
+
+                <div id="heatmap-container" style="display:none; margin-bottom: 24px;">
+                    <h4>AI Vision: Diseased Areas Highlighted</h4>
+                    <img id="heatmap-img" src="" style="width:100%; border-radius:12px; margin-top:12px;">
+                </div>
+
+                <div class="action-plan">
+                    <h4>Action Plan Checklist</h4>
+                    <label><input type="checkbox"> Remove infected leaves immediately</label>
+                    <label><input type="checkbox"> Spray recommended treatment today</label>
+                    <label><input type="checkbox"> Improve air circulation around plant</label>
+                    <label><input type="checkbox"> Set reminder for next spray in 7 days</label>
+                </div>
+
+                <div class="gamification">
+                    <div class="health-score">
+                        <span>Plant Health Score</span>
+                        <strong id="health-score">72/100</strong>
+                    </div>
+                    <div class="badge">+5 Points: Early Detection</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="uvp-section">
+            <div class="uvp-card">
+                <h3>Explainable AI</h3>
+                <p>Grad-CAM heatmaps show exactly where the disease is on your leaf.</p>
+            </div>
+            <div class="uvp-card">
+                <h3>Instant Results</h3>
+                <p>Get diagnosis + treatment plan in 3 seconds. No waiting.</p>
+            </div>
+            <div class="uvp-card">
+                <h3>Actionable</h3>
+                <p>Organic + chemical cures + prevention tips for real farmers.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 AgroLens | Pepper Disease Detection FYP</p>
+        <p>Powered by CNN + Grad-CAM</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
