@@ -4,3 +4,4 @@ pillow
 numpy
 opencv-python-headless==4.8.1.78
 gunicorn
+gdown==5.1.0
