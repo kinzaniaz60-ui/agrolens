@@ -1,7 +1,9 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # Suppress TensorFlow warnings
+
 import numpy as np
 from flask import Flask, render_template, request, jsonify
-import keras
+import tensorflow as tf
 from PIL import Image
 import gdown
 
@@ -20,7 +22,7 @@ else:
 print("2. Loading Keras model...")
 app = Flask(__name__)
 
-model = keras.models.load_model(MODEL_PATH, compile=False)
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 print("3. Model loaded successfully!")
 
 class_names = ['bacterial_spot', 'healthy']
