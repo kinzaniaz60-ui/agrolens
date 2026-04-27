@@ -3,12 +3,25 @@ import numpy as np
 from flask import Flask, render_template, request, jsonify
 import keras
 from PIL import Image
+import gdown
 
-print("1. Loading Keras 3.14 model...")
+print("1. Checking for model...")
+
+# DOWNLOAD MODEL BEFORE LOADING IT
+MODEL_PATH = 'pepper_disease_model.h5'
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    url = 'https://drive.google.com/uc?id=1tCog2DDn3TJpcDzXiaDo8yvlD4O75xnp'
+    gdown.download(url, MODEL_PATH, quiet=False)
+    print("Model downloaded successfully!")
+else:
+    print("Model already exists.")
+
+print("2. Loading Keras model...")
 app = Flask(__name__)
 
-model = keras.models.load_model('pepper_disease_model.h5', compile=False)
-print("2. Model loaded successfully!")
+model = keras.models.load_model(MODEL_PATH, compile=False)
+print("3. Model loaded successfully!")
 
 class_names = ['bacterial_spot', 'healthy']
 os.makedirs('static', exist_ok=True)
@@ -36,5 +49,6 @@ def upload_file():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    print("3. Starting Flask server...")
-    app.run(debug=True)
+    print("4. Starting Flask server...")
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
